@@ -1,2 +1,7 @@
 # Housing-app
-This app provides an efficient way to search for houses for rent. Searching of houses is based on optimal location from various locations like schools,offices,etc. This app also tries to find optimal based on analysis of facebook profile of individuals. 
+---
+##Summary
+This django app provides an efficient way to search for the best locality and houses in and around that locality to rent/buy. 
+
+Optimal location is computed based on various data like the location of schools, colleges, offices, etc. visited by the family members. The houses listed are scraped from the Housing.com and commonfloor.com search portals.
+
