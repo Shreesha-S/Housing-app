@@ -1,11 +1,33 @@
 import requests
 import json
 
-
+"""
 print ("Enter the locality frequently visited.")
 inp_str = raw_input().strip()
 
-# geocode = https://maps.googleapis.com/maps/api/geocode/json?address=
+"""
+print "Enter three frequently visited locations."
+totlat = 0
+totlng = 0
+for i in range(3):
+    area = raw_input()
+    geocode = "https://maps.googleapis.com/maps/api/geocode/json?address=" + area
+    gresp = requests.get(geocode)
+    gresp = json.loads(gresp.content)
+    #arr.append(area)
+    """
+    gresp -> results -> 0 -> geometry ->bounds, location ->lat, long
+    """
+    latlng = []
+    totlat += gresp["results"][0]["geometry"]["location"]["lat"]
+    totlng += gresp["results"][0]["geometry"]["location"]["lng"]
+
+avglat = totlat/3.0
+avglng = totlng/3.0
+
+revsgeo = requests.get("https://maps.googleapis.com/maps/api/geocode/json?latlng="+str(avglat)+","+str(avglng))
+revsgeo = json.loads(revsgeo.content)
+inp_str = str(revsgeo["results"][-6]["address_components"][0]["long_name"])
 
 area_resph = requests.get("https://regions.housing.com/api/v1/polygon/suggest?input="\
                         +inp_str+"&service_type=rent&cursor=8&source=web")
