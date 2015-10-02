@@ -4,9 +4,9 @@ import json
 
 print ("Enter the locality frequently visited.")
 inp_str = raw_input().strip()
-area_resp = requests.get("https://regions.housing.com/api/v1/polygon/suggest?input="\
+area_resph = requests.get("https://regions.housing.com/api/v1/polygon/suggest?input="\
                         +inp_str+"&service_type=rent&cursor=8&source=web")
-area_parse = json.loads(area_resp.content)
+area_parseh = json.loads(area_resph.content)
 
 """
 Link to get area code: https://regions.housing.com/api/v1/polygon/suggest?
@@ -16,22 +16,22 @@ Link to get area code: https://regions.housing.com/api/v1/polygon/suggest?
 Attributes: uuid, took, is_valid, city_id, super_type, type, name
 """
 
-area_code = []
+area_codeh = []
 for index in range(10):
     try:
-        print area_parse[index]['uuid']
-        if len(area_parse[index]['uuid']) <= 7:
-            area_code.append(str(area_parse[index]['uuid']))
+        print area_parseh[index]['uuid']
+        if len(area_parseh[index]['uuid']) <= 7:
+            area_codeh.append(str(area_parseh[index]['uuid']))
         else:
             None
     except:
         break
 
-for iterat in area_code:
-    resp = requests.get("https://rails.housing.com//api/v3/rent/filter?&est="\
+for iterat in area_codeh:
+    resphh = requests.get("https://rails.housing.com//api/v3/rent/filter?&est="\
                     +iterat+"&radius=500&details=true&sort_key=relevance&\
                     sort_order=ASC&personalisation_status=on")
-    resp_parse = json.loads(resp.content)
+    resp_parseh = json.loads(resph.content)
 
     """
         resp_parseh -> hits, _shards, took, aggregations, profile_used, timed_out
@@ -60,11 +60,11 @@ for iterat in area_code:
 
     for i in range(50):
         try:
-            print resp_parse['hits']['hits'][i]['_source']['locality'],
-            print resp_parse['hits']['hits'][i]['_source']['latitude'],
-            print resp_parse['hits']['hits'][i]['_source']['longitude'],
-            print resp_parse['hits']['hits'][i]['_source']['formatted_rent'],
-            print resp_parse['hits']['hits'][i]['_source']['lifestyle_rating']
+            print resp_parseh['hits']['hits'][i]['_source']['locality'],
+            print resp_parseh['hits']['hits'][i]['_source']['latitude'],
+            print resp_parseh['hits']['hits'][i]['_source']['longitude'],
+            print resp_parseh['hits']['hits'][i]['_source']['formatted_rent'],
+            print resp_parseh['hits']['hits'][i]['_source']['lifestyle_rating']
         except:
             break
 
