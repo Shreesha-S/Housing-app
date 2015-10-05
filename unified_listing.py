@@ -9,8 +9,10 @@ inp_str = raw_input().strip()
 print "Enter three frequently visited locations."
 totlat = 0
 totlng = 0
+location = []
 for i in range(3):
     area = raw_input()
+    location.append(area)
     geocode = "https://maps.googleapis.com/maps/api/geocode/json?address=" + area
     gresp = requests.get(geocode)
     gresp = json.loads(gresp.content)
@@ -79,10 +81,22 @@ for iterat in area_codeh:
     for i in range(50):
         try:
             print resp_parseh['hits']['hits'][i]['_source']['locality'],
+            if i == 0:
+                latitude = resp_parseh['hits']['hits'][i]['_source']['latitude']
+                longitude = resp_parseh['hits']['hits'][i]['_source']['longitude']
             print resp_parseh['hits']['hits'][i]['_source']['latitude'],
             print resp_parseh['hits']['hits'][i]['_source']['longitude'],
             print resp_parseh['hits']['hits'][i]['_source']['formatted_rent'],
             print resp_parseh['hits']['hits'][i]['_source']['lifestyle_rating']
         except:
             break
+
+geomatrix = requests.get("https://maps.googleapis.com/maps/api/distancematrix/json?origins="+str(latitude)+","+str(longitude)+"&destinations="+location[0]+"|"+location[1]+"|"+location[2]+"|"+"kempegowda+International+Airport+Bangalore")
+geomatrix = json.loads(geomatrix.content)
+print ""
+for i in range(3):
+    print "DISTANCE TO ",
+    print location[i],
+    print ":  ",
+    print geomatrix["rows"][0]["elements"][i]["distance"]["text"]
 
